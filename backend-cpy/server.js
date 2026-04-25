@@ -530,7 +530,7 @@ app.post("/contact", async (req, res) => {
     const response = await axios.post(
       "https://www.google.com/recaptcha/api/siteverify",
       null,
-      { params: { secret: process.env.RECAPTCHA_SECRET, response: captchaToken } }
+      { params: { secret: process.env.RECAPTCHA_SECRET_KEY, response: captchaToken } }
     );
 
     if (!response.data.success) {
