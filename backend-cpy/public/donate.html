@@ -560,7 +560,7 @@ document.querySelector(".donate-form").addEventListener("submit", async function
   try {
 
     // 🔥 FIX: PORT CHANGED TO 5000
-    const res = await fetch("http://localhost:5000/create-order", {
+    const res = await fetch("https://fp-final-7rw1.onrender.com/create-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -595,7 +595,7 @@ document.querySelector(".donate-form").addEventListener("submit", async function
 
         try {
           // 🔥 FIX: PORT CHANGED TO 5000
-          const verifyRes = await fetch("http://localhost:5000/verify-payment", {
+          const verifyRes = await fetch("https://fp-final-7rw1.onrender.com/verify-payment", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
