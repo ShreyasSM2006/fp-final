@@ -1018,14 +1018,9 @@ const publicPath = path.join(__dirname, "public");
 
 app.use(express.static(publicPath));
 
-// Handle all routes → index.html (SPA support)
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
-
-// ──────────────────────────────────────────────
-// Start Server
-// ──────────────────────────────────────────────
 
 const PORT = process.env.PORT || 5000;
 
