@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donate - Vatsalya Trust</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  zoom: 100%;
+  background: #f4f6f9;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+/* LOGOS */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+  width: auto;
+}
+
+/* NAVIGATION LINKS & DROPDOWN LOGIC */
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px; /* Tightened gap to accommodate more dropdowns */
+}
+
+.nav-links li {
+  position: relative; /* Anchor for the dropdown menu */
+  white-space: nowrap;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 15px;
+  display: block;
+  transition: 0.3s;
+}
+
+/* HOVER UNDERLINE (Desktop Only) */
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* THE DROPDOWN MENU */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Sits exactly below the parent li */
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 10px 0;
+  border-top: 2px solid #e63946; /* Visual indicator */
+}
+
+/* Show menu when hovering over the parent LI */
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li {
+  display: block;
+  width: 100%;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+}
+
+.dropdown-content li a:hover {
+  background: #f8f9fa;
+  color: #e63946;
+  padding-left: 25px; /* Slight slide effect */
+}
+
+/* Arrow indicator for dropdowns */
+.dropbtn::after {
+  content: ' ▾';
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* RIGHT: DONATE BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.donate-btn:hover {
+  background: #c92a35;
+}
+
+/* MOBILE MENU (HAMBURGER) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 4px;
+}
+
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.hero {
+  background: linear-gradient(to right, #2c3e50, #4ca1af);
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.section {
+  padding: 60px 10%;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.donate-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.donate-form input,
+.donate-form select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.iti {
+  width: 100%;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+}
+
+.card {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+.info {
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+}
+.footer {
+  background: #000; /* pure black */
+  color: #fff;
+  padding: 20px 40px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;              /* key change */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;            /* prevents breaking on small screens */
+  gap: 20px;
+}
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e63946;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #bbb; /* slightly softer */
+  text-decoration: none;
+}
+.footer-section a {
+  transition: 0.3s;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  gap: 15px; /* makes links horizontal */
+  padding: 0;
+  align-items: center;
+flex-wrap: wrap; /* prevents overflow */
+}
+
+.footer-section ul li {
+  margin: 0; /* remove vertical spacing */
+}
+
+.footer-section a:hover {
+  color: #e63946;
+}
+
+/* SOCIAL */
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+</style>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="tuv (1).jpg" alt="TUV Logo">
+      <a href="index.html">
+        <img src="logo.jpg" alt="NGO Logo">
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="index.html" class="dropbtn">Home</a>
+        <ul class="dropdown-content">
+          <li><a href="About.html">Our Vision</a></li>
+          <li><a href="annual-reports.html">Annual Report</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="About.html" class="dropbtn">About Us</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Our Partners</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="projects.html" class="dropbtn">Projects</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Child Education</a></li>
+          <li><a href="#">Environment</a></li>
+          <li><a href="#">Health Camps</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="success-stories.html" class="dropbtn">Success Stories</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Impact 2024</a></li>
+          <li><a href="#">Case Studies</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="events.html" class="dropbtn">Events</a>
+        <ul class="dropdown-content">
+          <li><a href="latest-events.html">Latest Events</a></li>
+          <!-- <li><a href="#">Upcoming Events</a></li>
+          <li><a href="#">Past Events</a></li> -->
+        </ul>
+      </li>
+
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Support a Life, Make a Difference ❤️</h1>
+  <p>Your contribution can transform lives</p>
+</section>
+
+<section class="section">
+  <h2>Donate Online</h2>
+
+  <form class="donate-form">
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email" required>
+
+    <input id="phone" type="tel" placeholder="Phone Number" required>
+
+    <!-- 🌍 GLOBAL CURRENCY DROPDOWN -->
+    <select>
+      <option value="INR" selected>INR (₹) - India</option>
+      <option value="USD">USD ($) - USA</option>
+      <option value="EUR">EUR (€) - Europe</option>
+      <option value="GBP">GBP (£) - UK</option>
+      <option value="AUD">AUD ($) - Australia</option>
+      <option value="CAD">CAD ($) - Canada</option>
+      <option value="SGD">SGD ($) - Singapore</option>
+      <option value="AED">AED (د.إ) - UAE</option>
+      <option value="SAR">SAR (﷼) - Saudi Arabia</option>
+      <option value="JPY">JPY (¥) - Japan</option>
+      <option value="CNY">CNY (¥) - China</option>
+      <option value="CHF">CHF - Switzerland</option>
+      <option value="NZD">NZD ($) - New Zealand</option>
+      <option value="ZAR">ZAR (R) - South Africa</option>
+      <option value="KRW">KRW (₩) - South Korea</option>
+      <option value="SEK">SEK (kr) - Sweden</option>
+      <option value="NOK">NOK (kr) - Norway</option>
+      <option value="DKK">DKK (kr) - Denmark</option>
+      <option value="HKD">HKD ($) - Hong Kong</option>
+      <option value="THB">THB (฿) - Thailand</option>
+      <option value="MYR">MYR (RM) - Malaysia</option>
+      <option value="BRL">BRL (R$) - Brazil</option>
+      <option value="RUB">RUB (₽) - Russia</option>
+      <option value="MXN">MXN ($) - Mexico</option>
+    </select>
+
+    <input type="number" placeholder="Amount" required>
+
+    <select>
+      <option>Choose Purpose</option>
+      <option>Child Sponsorship</option>
+      <option>Medical Support</option>
+      <option>General Donation</option>
+      <option>Fund a project</option>
+    </select>
+
+    <button class="submit-btn">Proceed to Payment</button>
+  </form>
+</section>
+
+<section class="section">
+  <h2>Other Ways to Donate</h2>
+  <div class="card-container">
+    <div class="card">
+      <h3>Donate Your Time</h3>
+      <p>Volunteering is the biggest donation you can make.</p>
+    </div>
+    <div class="card">
+      <h3>Indian / Foreign Donors</h3>
+      <p>Multiple donation options available including online and offline transfers.</p>
+    </div>
+    <div class="card">
+      <h3>Tax Benefit</h3>
+      <p>All donations are eligible under section 80(G).</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Sponsorship Programs</h2>
+  <div class="card-container">
+    <div class="card">
+      <h3>Girl Child</h3>
+      <p>₹2000/month supports education, food & healthcare.</p>
+    </div>
+    <div class="card">
+      <h3>Infant Orphan</h3>
+      <p>₹1200/month for nutrition and medical care.</p>
+    </div>
+    <div class="card">
+      <h3>Special Needs Child</h3>
+      <p>₹6000/month for physical & mental development.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Other Contributions</h2>
+  <div class="info">
+    <p>Corpus Fund donations (₹5000+)</p>
+    <p>Diwali Bhet Coupons fundraising</p>
+    <p>Donations in kind (books, food, supplies)</p>
+    <p>CSR Activities & Project Sponsorships</p>
+    <p>Medical support for special children</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Offline Donations</h2>
+  <div class="info">
+    <p><strong>Cheque/DD:</strong> In favour of "VATSALYA TRUST MUMBAI"</p>
+    <p>Send details including Name, PAN, Address, Email & Transaction info.</p>
+    <p>Email: vatsalyatrustmumbai@gmail.com</p>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+<script>
+const phoneInput = document.querySelector("#phone");
+
+window.intlTelInput(phoneInput, {
+  initialCountry: "in",
+  separateDialCode: true,
+  preferredCountries: ["in", "us", "gb"],
+  utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+});
+</script>
+ <footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Contact Details</h3>
+      <p>Email: info@ngo.org</p>
+      <p>Phone: +91 9876543210</p>
+      <p>Location: Mumbai, India</p>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="https://www.facebook.com/vatsalyatrustmumbai1983/">Facebook</a>
+        <a href="https://www.instagram.com/vatsalyatrustmumbai/">Instagram</a>
+        <a href="https://www.linkedin.com/company/vatsalyatrust/">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 NGO Name | All Rights Reserved</p>
+  </div>
+
+</footer>
+<script>
+document.querySelector(".donate-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  // ✅ Get values
+  const name = document.querySelector('input[placeholder="Full Name"]').value;
+  const email = document.querySelector('input[placeholder="Email"]').value;
+  const phone = document.querySelector("#phone").value;
+  const currency = document.querySelectorAll("select")[0].value;
+  const amount = document.querySelector('input[type="number"]').value;
+  const purpose = document.querySelectorAll("select")[1].value;
+
+  const data = { name, email, phone, currency, amount, purpose };
+
+  console.log("🚀 Sending:", data);
+
+  try {
+
+    // 🔥 FIX: PORT CHANGED TO 5000
+    const res = await fetch("http://localhost:5000/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+      throw new Error("Server not reachable");
+    }
+
+    const result = await res.json();
+    console.log("📦 Order:", result);
+
+    if (!result.id) {
+      alert("❌ Order creation failed");
+      return;
+    }
+
+    // 💳 Razorpay
+    const options = {
+      key: "rzp_test_SVkK154sjD8qPX",
+      amount: result.amount,
+      currency: result.currency,
+      order_id: result.id,
+
+      name: "Vatsalya Trust",
+      description: "Donation",
+
+      handler: async function (response) {
+        console.log("💰 Payment success:", response);
+
+        try {
+          // 🔥 FIX: PORT CHANGED TO 5000
+          const verifyRes = await fetch("http://localhost:5000/verify-payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(response)
+          });
+
+          const verifyData = await verifyRes.json();
+
+          if (verifyData.status === "success") {
+            alert("✅ Payment Successful");
+          } else {
+            alert("❌ Payment Failed");
+          }
+
+        } catch (err) {
+          console.error("Verify error:", err);
+          alert("Verification failed");
+        }
+      },
+
+      prefill: {
+        name: name,
+        email: email,
+        contact: phone
+      },
+
+      theme: {
+        color: "#27ae60"
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+  } catch (err) {
+    console.error("❌ FULL ERROR:", err);
+    alert("Error: " + err.message);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard - NGO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
+body { background: #f4f6f9; min-height:100vh; }
+
+/* NAV */
+nav {
+  width: 100%;
+  background: #2c7be5;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav h1 { font-size: 20px; }
+nav a {
+  color: #fff;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+nav a:hover { background: rgba(255,255,255,0.15); }
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 20px 30px 0;
+  border-bottom: 2px solid #dde1e7;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 18px;
+  border: none;
+  background: #e9ecef;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  color: #555;
+  transition: 0.2s;
+}
+.tab-btn.active { background: #2c7be5; color: white; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* CONTAINER */
+.container { padding: 20px 30px; }
+
+/* CARDS */
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1 1 150px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.card h2 { margin-bottom: 10px; color:#2c7be5; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.card p { font-size: 28px; font-weight: bold; color: #222; }
+
+/* TABLE */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+table th, table td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 13px;
+  vertical-align: top;
+}
+table th { background: #2c7be5; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+table tr:nth-child(even) { background: #f8f9fb; }
+table td { border-bottom: 1px solid #eee; }
+
+/* BADGES */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.badge.replied    { background: #d4edda; color: #155724; }
+.badge.pending    { background: #fff3cd; color: #856404; }
+.badge.completed  { background: #d4edda; color: #155724; }
+.badge.active-badge { background: #d4edda; color: #155724; }
+.badge.inactive-badge { background: #e9ecef; color: #555; }
+.badge.latest     { background: #fff3cd; color: #856404; }
+.badge.upcoming   { background: #d4edda; color: #155724; }
+.badge.past       { background: #e9ecef; color: #555; }
+
+/* REPLY PREVIEW */
+.reply-text {
+  color: #555;
+  font-style: italic;
+  max-width: 200px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  background: #2c7be5;
+  font-size: 12px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  transition: 0.2s;
+}
+.btn:hover { filter: brightness(0.9); }
+.btn.delete { background: #e02c2c; }
+.btn.success { background: #27ae60; }
+.btn.add-new {
+  background: #27ae60;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 90%;
+  max-width: 540px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal h3 { margin-bottom: 8px; color: #2c7be5; }
+.modal p.sub { font-size: 12px; color: #888; margin-bottom: 16px; }
+
+.modal textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+.modal input[type="text"],
+.modal input[type="url"],
+.modal input[type="number"],
+.modal select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+.modal label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+.btn-cancel {
+  padding: 8px 18px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+.btn-send {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 5px;
+  background: #2c7be5;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+.btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* THUMBNAIL */
+.thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #eee;
+}
+.no-img {
+  width: 48px;
+  height: 48px;
+  background: #eee;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* DESC CLIP */
+.desc-clip {
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555;
+}
+
+/* TOAST */
+.toast {
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: white;
+  z-index: 9999;
+}
+.toast.success { background: #27ae60; display: block; }
+.toast.error   { background: #e02c2c; display: block; }
+
+/* EMPTY STATE */
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Auth guard -->
+<script>
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Access denied! Please login.");
+    window.location.href = "Admin-login.html";
+  }
+</script>
+
+<nav>
+  <h1>🌿 NGO Admin</h1>
+  <div>
+    <a href="#" onclick="switchTab('messages')">Messages</a>
+    <a href="#" onclick="switchTab('volunteers')">Volunteers</a>
+    <a href="#" onclick="switchTab('donations')">Donations</a>
+    <a href="#" onclick="switchTab('events')">Events</a>
+    <a href="#" onclick="switchTab('projects')">Projects</a>
+    <a href="#" onclick="switchTab('stories')">Stories</a>
+    <a href="#" onclick="switchTab('announcements')">Announcements</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+</nav>
+
+<!-- SUMMARY CARDS -->
+<div class="container">
+  <div class="cards">
+    <div class="card"><h2>Total Messages</h2><p id="totalMessages">–</p></div>
+    <div class="card"><h2>Volunteer Requests</h2><p id="totalVolunteers">–</p></div>
+    <div class="card"><h2>Replied Messages</h2><p id="repliedMessages">–</p></div>
+    <div class="card"><h2>Pending Volunteers</h2><p id="pendingVolunteers">–</p></div>
+    <div class="card"><h2>Total Donations</h2><p id="totalDonations">–</p></div>
+    <div class="card"><h2>Amount Collected</h2><p id="totalDonationAmount">–</p></div>
+    <div class="card"><h2>Events</h2><p id="totalEvents">–</p></div>
+    <div class="card"><h2>Projects</h2><p id="totalProjects">–</p></div>
+    <div class="card"><h2>Stories</h2><p id="totalStories">–</p></div>
+    <div class="card"><h2>Announcements</h2><p id="totalAnnouncements">–</p></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" id="tab-messages"      onclick="switchTab('messages')">📩 Contact Messages</button>
+  <button class="tab-btn"        id="tab-volunteers"    onclick="switchTab('volunteers')">🙋 Volunteer Requests</button>
+  <button class="tab-btn"        id="tab-donations"     onclick="switchTab('donations')">💰 Donations</button>
+  <button class="tab-btn"        id="tab-events"        onclick="switchTab('events')">📅 Events</button>
+  <button class="tab-btn"        id="tab-projects"      onclick="switchTab('projects')">🏗️ Projects</button>
+  <button class="tab-btn"        id="tab-stories"       onclick="switchTab('stories')">⭐ Success Stories</button>
+  <button class="tab-btn"        id="tab-announcements" onclick="switchTab('announcements')">📢 Announcements</button>
+</div>
+
+<!-- ALL TAB CONTENT INSIDE ONE .container SO switchTab WORKS UNIFORMLY -->
+<div class="container">
+
+  <!-- ── MESSAGES TAB ── -->
+  <div class="tab-content active" id="content-messages">
+    <p class="section-title">Contact Form Submissions</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Admin Reply</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="messagesTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── VOLUNTEERS TAB ── -->
+  <div class="tab-content" id="content-volunteers">
+    <p class="section-title">Volunteer Applications</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Interest</th><th>Why Volunteer?</th><th>Admin Reply</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="volunteersTable"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── DONATIONS TAB ── -->
+  <div class="tab-content" id="content-donations">
+    <p class="section-title">Donation Records</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Amount</th><th>Currency</th><th>Purpose</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="donationsTable"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── EVENTS TAB ── -->
+  <div class="tab-content" id="content-events">
+    <div class="section-header">
+      <p class="section-title">Events Management</p>
+      <button class="btn add-new" onclick="openCmsModal('event', null)">+ Add New Event</button>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Image</th><th>Title</th><th>Description</th><th>Date</th><th>Type</th><th>Actions</th></tr></thead>
+        <tbody id="eventsTable"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── PROJECTS TAB ── -->
+  <div class="tab-content" id="content-projects">
+    <div class="section-header">
+      <p class="section-title">Projects Management</p>
+      <button class="btn add-new" onclick="openCmsModal('project', null)">+ Add New Project</button>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Image</th><th>Title</th><th>Description</th><th>Funded %</th><th>Actions</th></tr></thead>
+        <tbody id="projectsTable"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── STORIES TAB ── -->
+  <div class="tab-content" id="content-stories">
+    <div class="section-header">
+      <p class="section-title">Success Stories Management</p>
+      <button class="btn add-new" onclick="openCmsModal('story', null)">+ Add New Story</button>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Image</th><th>Title</th><th>Description</th><th>Actions</th></tr></thead>
+        <tbody id="storiesTable"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ANNOUNCEMENTS TAB ── -->
+  <div class="tab-content" id="content-announcements">
+    <div class="section-header">
+      <p class="section-title">Announcements Management</p>
+      <button class="btn add-new" onclick="openAnnouncementModal()">+ Add New Announcement</button>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Text</th>
+            <th>Link</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="announcementsTable">
+          <tr><td colspan="5" class="empty">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /.container -->
+
+<!-- ── REPLY MODAL ── -->
+<div class="modal-overlay" id="replyModal">
+  <div class="modal">
+    <h3>Send Reply</h3>
+    <p class="sub" id="modalMeta">Replying to: –</p>
+    <textarea id="replyText" placeholder="Type your reply here…"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('replyModal')">Cancel</button>
+      <button class="btn-send" id="sendBtn" onclick="sendReply()">Send Reply ✉️</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CMS MODAL (Events / Projects / Stories) ── -->
+<div class="modal-overlay" id="cmsModal">
+  <div class="modal">
+    <h3 id="cmsModalTitle">Add Item</h3>
+    <p class="sub" id="cmsModalSub"></p>
+
+    <label>Title *</label>
+    <input type="text" id="cmsTitle" placeholder="Enter title…">
+
+    <label>Description *</label>
+    <textarea id="cmsDescription" placeholder="Enter description…" style="min-height:90px;"></textarea>
+
+    <label>Image URL</label>
+    <input type="url" id="cmsImage" placeholder="https://example.com/image.jpg">
+
+    <!-- Event-only fields -->
+    <div id="cmsEventFields">
+      <label>Event Date</label>
+      <input type="text" id="cmsDate" placeholder="e.g. April 20, 2026">
+
+      <label>Event Type</label>
+      <select id="cmsType">
+        <option value="upcoming">Upcoming</option>
+        <option value="latest">Latest</option>
+        <option value="past">Past</option>
+      </select>
+    </div>
+
+    <!-- Project-only fields -->
+    <div id="cmsProjectFields" style="display:none;">
+      <label>Funded % (0–100)</label>
+      <input type="number" id="cmsFunded" placeholder="e.g. 75" min="0" max="100">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('cmsModal')">Cancel</button>
+      <button class="btn-send" id="cmsSaveBtn" onclick="saveCmsItem()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ANNOUNCEMENT MODAL (dedicated, separate from CMS modal) ── -->
+<div class="modal-overlay" id="announcementModal">
+  <div class="modal">
+    <h3>📢 Add Announcement</h3>
+    <p class="sub">This text will scroll on the homepage announcement bar.</p>
+
+    <label>Announcement Text *</label>
+    <input type="text" id="annText" placeholder="e.g. 📢 Health camp on Sunday | Volunteer registrations open">
+
+    <label>Link (optional)</label>
+    <input type="url" id="annLink" placeholder="https://example.com/details">
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('announcementModal')">Cancel</button>
+      <button class="btn-send" id="annSaveBtn" onclick="saveAnnouncement()">Save Announcement</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const BASE = "http://localhost:5000";
+
+  // ─── State ───────────────────────────────────
+  let currentReply = { type: null, id: null, email: null, name: null };
+  let currentCms   = { type: null, id: null };
+
+  // ─── Tab switching ────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    document.getElementById("tab-" + tab).classList.add("active");
+    document.getElementById("content-" + tab).classList.add("active");
+  }
+
+  // ─── Toast ────────────────────────────────────
+  function showToast(msg, type = "success") {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "toast " + type;
+    setTimeout(() => { t.className = "toast"; }, 4000);
+  }
+
+  // ─── Logout ───────────────────────────────────
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "Admin-login.html";
+  }
+
+  // ─── Auth header helper ───────────────────────
+  function authHeaders() {
+    return {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.getItem("token")
+    };
+  }
+
+  // ─── Modal helpers ────────────────────────────
+  function closeModal(id) {
+    document.getElementById(id).classList.remove("open");
+  }
+
+  // ─── Escape helpers ───────────────────────────
+  function escHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+  function escAttr(str) {
+    if (!str) return '';
+    return String(str).replace(/'/g, "\\'").replace(/"/g, '\\"');
+  }
+
+  // ─────────────────────────────────────────────
+  // MESSAGES
+  // ─────────────────────────────────────────────
+  async function loadMessages() {
+    try {
+      const res  = await fetch(`${BASE}/api/contact`, { headers: authHeaders() });
+      const data = await res.json();
+
+      if (!data.success) {
+        alert("Session expired. Please log in again.");
+        localStorage.removeItem("token");
+        window.location.href = "Admin-login.html";
+        return;
+      }
+
+      document.getElementById("totalMessages").textContent   = data.messages.length;
+      document.getElementById("repliedMessages").textContent = data.messages.filter(c => c.replied).length;
+
+      const tbody = document.getElementById("messagesTable");
+      tbody.innerHTML = "";
+
+      if (!data.messages.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">No messages yet.</td></tr>';
+        return;
+      }
+
+      data.messages.forEach(contact => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><strong>${escHtml(contact.name)}</strong></td>
+          <td>${escHtml(contact.email)}</td>
+          <td>${escHtml(contact.message)}</td>
+          <td>${contact.reply ? `<span class="reply-text">${escHtml(contact.reply)}</span>` : '<span style="color:#aaa;font-size:12px;">No reply yet</span>'}</td>
+          <td><span class="badge ${contact.replied ? 'replied' : 'pending'}">${contact.replied ? '✅ Replied' : '⏳ Pending'}</span></td>
+          <td>
+            <button class="btn" onclick="openModal('contact','${contact._id}','${escAttr(contact.email)}','${escAttr(contact.name)}')">Reply</button>
+            <button class="btn delete" onclick="deleteContact('${contact._id}')">Delete</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load messages", "error");
+    }
+  }
+
+  async function deleteContact(id) {
+    if (!confirm("Delete this message?")) return;
+    try {
+      const res  = await fetch(`${BASE}/contact/${id}`, { method: "DELETE", headers: authHeaders() });
+      const data = await res.json();
+      if (data.success) { showToast("🗑️ Deleted"); loadMessages(); }
+      else showToast("❌ Delete failed", "error");
+    } catch (err) { showToast("❌ Server error", "error"); }
+  }
+
+  // ─────────────────────────────────────────────
+  // VOLUNTEERS
+  // ─────────────────────────────────────────────
+  async function loadVolunteers() {
+    try {
+      const res  = await fetch(`${BASE}/api/volunteer/all`, { headers: authHeaders() });
+      const data = await res.json();
+
+      document.getElementById("totalVolunteers").textContent   = data.volunteers?.length ?? 0;
+      document.getElementById("pendingVolunteers").textContent = (data.volunteers ?? []).filter(v => !v.replied).length;
+
+      const tbody = document.getElementById("volunteersTable");
+      tbody.innerHTML = "";
+
+      if (!data.volunteers?.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty">No volunteer applications yet.</td></tr>';
+        return;
+      }
+
+      data.volunteers.forEach(v => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><strong>${escHtml(v.name)}</strong></td>
+          <td>${escHtml(v.email)}</td>
+          <td>${escHtml(v.phone || '–')}</td>
+          <td>${escHtml(v.interest || '–')}</td>
+          <td>${escHtml(v.message)}</td>
+          <td>${v.reply ? `<span class="reply-text">${escHtml(v.reply)}</span>` : '<span style="color:#aaa;font-size:12px;">No reply yet</span>'}</td>
+          <td><span class="badge ${v.replied ? 'replied' : 'pending'}">${v.replied ? '✅ Replied' : '⏳ Pending'}</span></td>
+          <td>
+            <button class="btn" onclick="openModal('volunteer','${v._id}','${escAttr(v.email)}','${escAttr(v.name)}')">Reply</button>
+            <button class="btn delete" onclick="deleteVolunteer('${v._id}')">Delete</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load volunteers", "error");
+    }
+  }
+
+  async function deleteVolunteer(id) {
+    if (!confirm("Delete this volunteer application?")) return;
+    try {
+      const res  = await fetch(`${BASE}/api/volunteer/${id}`, { method: "DELETE", headers: authHeaders() });
+      const data = await res.json();
+      if (data.success) { showToast("🗑️ Deleted"); loadVolunteers(); }
+      else showToast("❌ Delete failed", "error");
+    } catch (err) { showToast("❌ Server error", "error"); }
+  }
+
+  // ─────────────────────────────────────────────
+  // DONATIONS
+  // ─────────────────────────────────────────────
+  async function loadDonations() {
+    try {
+      const res  = await fetch(`${BASE}/api/donations`, { headers: authHeaders() });
+      const data = await res.json();
+
+      if (!data.success) { showToast("❌ Failed to load donations", "error"); return; }
+
+      document.getElementById("totalDonations").textContent      = data.donations.length;
+      document.getElementById("totalDonationAmount").textContent = "₹" + (data.totalAmount || 0).toLocaleString("en-IN");
+
+      const tbody = document.getElementById("donationsTable");
+      tbody.innerHTML = "";
+
+      if (!data.donations.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">No donations yet.</td></tr>';
+        return;
+      }
+
+      data.donations.forEach(d => {
+        const date = d.createdAt ? new Date(d.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "–";
+        const isCompleted = d.status === "completed";
+        const sym = d.currency === "INR" ? "₹" : (d.currency || "");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><strong>${escHtml(d.name || '–')}</strong></td>
+          <td>${escHtml(d.email || '–')}</td>
+          <td><strong>${sym}${(d.amount || 0).toLocaleString("en-IN")}</strong></td>
+          <td>${escHtml(d.currency || '–')}</td>
+          <td>${escHtml(d.purpose || '–')}</td>
+          <td><span class="badge ${isCompleted ? 'completed' : 'pending'}">${isCompleted ? '✅ Completed' : '⏳ Pending'}</span></td>
+          <td>${date}</td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load donations", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // REPLY MODAL
+  // ─────────────────────────────────────────────
+  function openModal(type, id, email, name) {
+    currentReply = { type, id, email, name };
+    document.getElementById("modalMeta").textContent = `Replying to: ${name} (${email})`;
+    document.getElementById("replyText").value = "";
+    document.getElementById("replyModal").classList.add("open");
+    document.getElementById("replyText").focus();
+  }
+
+  async function sendReply() {
+    const replyMessage = document.getElementById("replyText").value.trim();
+    if (!replyMessage) { showToast("⚠️ Please enter a reply message.", "error"); return; }
+
+    const btn = document.getElementById("sendBtn");
+    btn.disabled = true; btn.textContent = "Sending…";
+
+    try {
+      let url, body;
+      if (currentReply.type === "contact") {
+        url  = `${BASE}/reply`;
+        body = JSON.stringify({ id: currentReply.id, email: currentReply.email, name: currentReply.name, replyMessage });
+      } else {
+        url  = `${BASE}/api/volunteer/reply/${currentReply.id}`;
+        body = JSON.stringify({ replyMessage });
+      }
+
+      const res  = await fetch(url, { method: "POST", headers: authHeaders(), body });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast("✅ Reply sent!");
+        closeModal("replyModal");
+        if (currentReply.type === "contact") loadMessages(); else loadVolunteers();
+      } else showToast("❌ " + (data.message || "Failed to send reply"), "error");
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Server error", "error");
+    } finally {
+      btn.disabled = false; btn.textContent = "Send Reply ✉️";
+    }
+  }
+
+  document.getElementById("replyModal").addEventListener("click", function(e) {
+    if (e.target === this) closeModal("replyModal");
+  });
+
+  // ─────────────────────────────────────────────
+  // CMS — EVENTS
+  // ─────────────────────────────────────────────
+  async function loadEvents() {
+    try {
+      const res  = await fetch(`${BASE}/api/events`);
+      const data = await res.json();
+
+      document.getElementById("totalEvents").textContent = data.events?.length ?? 0;
+
+      const tbody = document.getElementById("eventsTable");
+      tbody.innerHTML = "";
+
+      if (!data.events?.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty">No events yet. Click "Add New Event" to get started.</td></tr>';
+        return;
+      }
+
+      data.events.forEach(ev => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${ev.image ? `<img src="${escHtml(ev.image)}" class="thumb" onerror="this.style.display='none'">` : '<div class="no-img">📅</div>'}</td>
+          <td><strong>${escHtml(ev.title)}</strong></td>
+          <td><div class="desc-clip">${escHtml(ev.description)}</div></td>
+          <td>${escHtml(ev.date || '–')}</td>
+          <td><span class="badge ${ev.type}">${ev.type}</span></td>
+          <td>
+            <button class="btn" onclick="openCmsModal('event', ${JSON.stringify(ev).replace(/"/g, '&quot;')})">Edit</button>
+            <button class="btn delete" onclick="deleteCmsItem('event','${ev._id}')">Delete</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load events", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // CMS — PROJECTS
+  // ─────────────────────────────────────────────
+  async function loadProjects() {
+    try {
+      const res  = await fetch(`${BASE}/api/projects`);
+      const data = await res.json();
+
+      document.getElementById("totalProjects").textContent = data.projects?.length ?? 0;
+
+      const tbody = document.getElementById("projectsTable");
+      tbody.innerHTML = "";
+
+      if (!data.projects?.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">No projects yet. Click "Add New Project" to get started.</td></tr>';
+        return;
+      }
+
+      data.projects.forEach(p => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${p.image ? `<img src="${escHtml(p.image)}" class="thumb" onerror="this.style.display='none'">` : '<div class="no-img">🏗️</div>'}</td>
+          <td><strong>${escHtml(p.title)}</strong></td>
+          <td><div class="desc-clip">${escHtml(p.description)}</div></td>
+          <td>
+            <div style="width:80px;background:#eee;height:8px;border-radius:4px;display:inline-block;vertical-align:middle;">
+              <div style="width:${p.funded||0}%;background:#2c7be5;height:100%;border-radius:4px;"></div>
+            </div>
+            <span style="font-size:12px;color:#555;margin-left:6px;">${p.funded||0}%</span>
+          </td>
+          <td>
+            <button class="btn" onclick="openCmsModal('project', ${JSON.stringify(p).replace(/"/g, '&quot;')})">Edit</button>
+            <button class="btn delete" onclick="deleteCmsItem('project','${p._id}')">Delete</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load projects", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // CMS — STORIES
+  // ─────────────────────────────────────────────
+  async function loadStories() {
+    try {
+      const res  = await fetch(`${BASE}/api/stories`);
+      const data = await res.json();
+
+      document.getElementById("totalStories").textContent = data.stories?.length ?? 0;
+
+      const tbody = document.getElementById("storiesTable");
+      tbody.innerHTML = "";
+
+      if (!data.stories?.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">No stories yet. Click "Add New Story" to get started.</td></tr>';
+        return;
+      }
+
+      data.stories.forEach(s => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${s.image ? `<img src="${escHtml(s.image)}" class="thumb" onerror="this.style.display='none'">` : '<div class="no-img">⭐</div>'}</td>
+          <td><strong>${escHtml(s.title)}</strong></td>
+          <td><div class="desc-clip">${escHtml(s.description)}</div></td>
+          <td>
+            <button class="btn" onclick="openCmsModal('story', ${JSON.stringify(s).replace(/"/g, '&quot;')})">Edit</button>
+            <button class="btn delete" onclick="deleteCmsItem('story','${s._id}')">Delete</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Failed to load stories", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // CMS MODAL — open (Events / Projects / Stories ONLY)
+  // ─────────────────────────────────────────────
+  function openCmsModal(type, item) {
+    currentCms = { type, id: item ? item._id : null };
+
+    const labelMap = { event: "Event", project: "Project", story: "Success Story" };
+    const isEdit = !!item;
+
+    document.getElementById("cmsModalTitle").textContent =
+      (isEdit ? "Edit " : "Add New ") + (labelMap[type] || type);
+    document.getElementById("cmsModalSub").textContent = isEdit
+      ? "Update the fields below and save."
+      : "Fill in the details below and save.";
+
+    document.getElementById("cmsTitle").value       = item?.title       || "";
+    document.getElementById("cmsDescription").value = item?.description || "";
+    document.getElementById("cmsImage").value        = item?.image       || "";
+    document.getElementById("cmsDate").value         = item?.date        || "";
+    document.getElementById("cmsType").value         = item?.type        || "upcoming";
+    document.getElementById("cmsFunded").value       = item?.funded      ?? "";
+
+    document.getElementById("cmsEventFields").style.display   = type === "event"   ? "" : "none";
+    document.getElementById("cmsProjectFields").style.display = type === "project" ? "" : "none";
+
+    document.getElementById("cmsSaveBtn").textContent = isEdit ? "Update" : "Save";
+    document.getElementById("cmsModal").classList.add("open");
+    document.getElementById("cmsTitle").focus();
+  }
+
+  document.getElementById("cmsModal").addEventListener("click", function(e) {
+    if (e.target === this) closeModal("cmsModal");
+  });
+
+  // ─────────────────────────────────────────────
+  // CMS MODAL — save (Events / Projects / Stories ONLY)
+  // ─────────────────────────────────────────────
+  async function saveCmsItem() {
+    const { type, id } = currentCms;
+
+    const title       = document.getElementById("cmsTitle").value.trim();
+    const description = document.getElementById("cmsDescription").value.trim();
+    const image       = document.getElementById("cmsImage").value.trim();
+
+    if (!title || !description) {
+      showToast("⚠️ Title and description are required.", "error");
+      return;
+    }
+
+    const endpointMap = { event: "events", project: "projects", story: "stories" };
+    const endpoint = endpointMap[type];
+    if (!endpoint) {
+      showToast("❌ Invalid content type: " + type, "error");
+      return;
+    }
+
+    const btn = document.getElementById("cmsSaveBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try {
+      let body = { title, description, image };
+
+      if (type === "event") {
+        body.date = document.getElementById("cmsDate").value.trim();
+        body.type = document.getElementById("cmsType").value;
+      } else if (type === "project") {
+        body.funded = parseInt(document.getElementById("cmsFunded").value) || 0;
+      }
+
+      const url    = id ? `${BASE}/api/${endpoint}/${id}` : `${BASE}/api/${endpoint}`;
+      const method = id ? "PUT" : "POST";
+
+      const res  = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast(`✅ ${id ? "Updated" : "Created"} successfully!`);
+        closeModal("cmsModal");
+        if (type === "event")   loadEvents();
+        if (type === "project") loadProjects();
+        if (type === "story")   loadStories();
+      } else {
+        showToast("❌ " + (data.message || "Operation failed"), "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Server error", "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? "Update" : "Save";
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // CMS — delete (Events / Projects / Stories)
+  // ─────────────────────────────────────────────
+  async function deleteCmsItem(type, id) {
+    const labels = { event: "event", project: "project", story: "success story" };
+    if (!confirm(`Delete this ${labels[type] || type}?`)) return;
+
+    try {
+      const endpointMap = { event: "events", project: "projects", story: "stories" };
+      const res  = await fetch(`${BASE}/api/${endpointMap[type]}/${id}`, { method: "DELETE", headers: authHeaders() });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast("🗑️ Deleted");
+        if (type === "event")   loadEvents();
+        if (type === "project") loadProjects();
+        if (type === "story")   loadStories();
+      } else showToast("❌ Delete failed", "error");
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Server error", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // ANNOUNCEMENTS — load
+  // ─────────────────────────────────────────────
+  async function loadAnnouncements() {
+    try {
+      // Pass auth token so server returns ALL announcements (not just active)
+      const res  = await fetch(`${BASE}/api/announcements`, { headers: authHeaders() });
+      const data = await res.json();
+
+      const table = document.getElementById("announcementsTable");
+      table.innerHTML = "";
+
+      const count = data.announcements ? data.announcements.length : 0;
+      document.getElementById("totalAnnouncements").textContent = count;
+
+      if (!data.success || !count) {
+        table.innerHTML = `<tr><td colspan="5" class="empty">No announcements yet. Click "+ Add New Announcement" to create one.</td></tr>`;
+        return;
+      }
+
+      data.announcements.forEach(a => {
+        const row = document.createElement("tr");
+        const date = a.createdAt ? new Date(a.createdAt).toLocaleString("en-IN", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "–";
+        row.innerHTML = `
+          <td><strong>${escHtml(a.text)}</strong></td>
+          <td>${a.link ? `<a href="${escHtml(a.link)}" target="_blank" style="color:#2c7be5;">${escHtml(a.link)}</a>` : '<span style="color:#aaa;">–</span>'}</td>
+          <td><span class="badge ${a.active ? 'active-badge' : 'inactive-badge'}">${a.active ? '✅ Active' : '⏸ Inactive'}</span></td>
+          <td style="white-space:nowrap;">${date}</td>
+          <td>
+            <button class="btn delete" onclick="deleteAnnouncement('${a._id}')">🗑️ Delete</button>
+          </td>`;
+        table.appendChild(row);
+      });
+
+    } catch (err) {
+      console.error("Announcements load error:", err);
+      showToast("❌ Failed to load announcements", "error");
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // ANNOUNCEMENTS — open dedicated modal
+  // ─────────────────────────────────────────────
+  function openAnnouncementModal() {
+    document.getElementById("annText").value = "";
+    document.getElementById("annLink").value = "";
+    document.getElementById("announcementModal").classList.add("open");
+    document.getElementById("annText").focus();
+  }
+
+  document.getElementById("announcementModal").addEventListener("click", function(e) {
+    if (e.target === this) closeModal("announcementModal");
+  });
+
+  // ─────────────────────────────────────────────
+  // ANNOUNCEMENTS — save (POST /api/announcements)
+  // ─────────────────────────────────────────────
+  async function saveAnnouncement() {
+    const text = document.getElementById("annText").value.trim();
+    const link = document.getElementById("annLink").value.trim();
+
+    if (!text) {
+      showToast("⚠️ Announcement text is required.", "error");
+      return;
+    }
+
+    const btn = document.getElementById("annSaveBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try {
+      const res = await fetch(`${BASE}/api/announcements`, {
+        method:  "POST",
+        headers: authHeaders(),
+        body:    JSON.stringify({ text, link, active: true })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showToast("✅ Announcement created!");
+        closeModal("announcementModal");
+        loadAnnouncements();
+      } else {
+        showToast("❌ " + (data.message || "Failed to create announcement"), "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Server error", "error");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Save Announcement";
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // ANNOUNCEMENTS — delete (DELETE /api/announcements/:id)
+  // ─────────────────────────────────────────────
+  async function deleteAnnouncement(id) {
+    if (!confirm("Delete this announcement? It will no longer appear on the homepage.")) return;
+
+    try {
+      const res  = await fetch(`${BASE}/api/announcements/${id}`, {
+        method:  "DELETE",
+        headers: authHeaders()
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast("🗑️ Announcement deleted");
+        loadAnnouncements();
+      } else {
+        showToast("❌ " + (data.message || "Delete failed"), "error");
+      }
+
+    } catch (err) {
+      console.error(err);
+      showToast("❌ Server error while deleting", "error");
+    }
+  }
+
+  // ─── Load everything on page load ────────────
+  window.onload = function() {
+    loadMessages();
+    loadVolunteers();
+    loadDonations();
+    loadEvents();
+    loadProjects();
+    loadStories();
+    loadAnnouncements();
+  };
+</script>
+
+</body>
+</html>

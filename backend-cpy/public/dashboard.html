@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+  border-radius: 5px;
+  font-size: 12px;
+}
+.unread { background: red; }
+.read { background: green; }
+button {
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-read { background: #22c55e; color: white; }
+.btn-delete { background: #ef4444; color: white; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h2>Admin Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+<div class="container">
+  <div class="stats">
+    <div class="stat-card">
+      <h3 id="total">0</h3>
+      <p>Total Messages</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="unread">0</h3>
+      <p>Unread</p>
+    </div>
+  </div>
+  <div class="messages" id="messages"></div>
+</div>
+<script>
+if (!localStorage.getItem("admin")) window.location.href = "index.html";
+
+function logout() {
+  localStorage.removeItem("admin");
+  window.location.href = "index.html";
+}
+
+function loadMessages() {
+  fetch("http://localhost:3000/messages")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("messages");
+      container.innerHTML = "";
+
+      document.getElementById("total").innerText = data.length;
+      document.getElementById("unread").innerText = data.filter(m => m.status === "unread").length;
+
+      data.reverse().forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "card";
+
+        div.innerHTML = `
+          <span class="badge ${msg.status === 'unread' ? 'unread' : 'read'}">${msg.status}</span>
+          <p><b>${msg.name}</b></p>
+          <p>${msg.email}</p>
+          <p>${msg.message}</p>
+          <small>${msg.time}</small><br>
+          <button class="btn-read" onclick="markRead(${msg.id})">Mark Read</button>
+          <button class="btn-delete" onclick="deleteMsg(${msg.id})">Delete</button>
+        `;
+
+        container.appendChild(div);
+      });
+    });
+}
+
+function markRead(id) {
+  fetch(`http://localhost:3000/messages/${id}`, { method: "PUT" })
+    .then(loadMessages);
+}
+
+function deleteMsg(id) {
+  fetch(`http://localhost:3000/messages/${id}`, { method: "DELETE" })
+    .then(loadMessages);
+}
+
+loadMessages();
+</script>
+</body>
+</html>

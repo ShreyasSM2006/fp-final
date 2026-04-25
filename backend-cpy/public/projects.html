@@ -1,0 +1,903 @@
+<!-- Home Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects Display - Vatsalya Trust</title>
+<style>
+/* UNIVERSAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  /* height: 200vh; Scroll space for demo */
+  min-height: 100vh;
+  zoom: 100%;    /* Your requested scale */
+  background-color: #f4f4f4;
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+footer{
+  margin-top: auto;
+}
+/* NAVBAR BASE */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+/* LOGOS */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+  width: auto;
+}
+
+/* NAVIGATION LINKS & DROPDOWN LOGIC */
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px; /* Tightened gap to accommodate more dropdowns */
+}
+
+.nav-links li {
+  position: relative; /* Anchor for the dropdown menu */
+  white-space: nowrap;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 15px;
+  display: block;
+  transition: 0.3s;
+}
+
+/* HOVER UNDERLINE (Desktop Only) */
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* THE DROPDOWN MENU */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Sits exactly below the parent li */
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 10px 0;
+  border-top: 2px solid #e63946; /* Visual indicator */
+}
+
+/* Show menu when hovering over the parent LI */
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li {
+  display: block;
+  width: 100%;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+}
+
+.dropdown-content li a:hover {
+  background: #f8f9fa;
+  color: #e63946;
+  padding-left: 25px; /* Slight slide effect */
+}
+
+/* Arrow indicator for dropdowns */
+.dropbtn::after {
+  content: ' ▾';
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* RIGHT: DONATE BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.donate-btn:hover {
+  background: #c92a35;
+}
+
+/* MOBILE MENU (HAMBURGER) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 4px;
+}
+
+.hero {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5); /* dark overlay for readability */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hero-buttons .btn {
+  padding: 12px 25px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-donate {
+  background: #e63946;
+  color: white;
+}
+
+.btn-donate:hover {
+  background: #c92a35;
+}
+
+.btn-volunteer {
+  background: white;
+  color: #4b2e83;
+}
+
+.btn-volunteer:hover {
+  background: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 32px;
+  }
+  .hero-content p {
+    font-size: 16px;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+/* MOBILE RESPONSIVE (900px) */
+@media (max-width: 1100px) {
+  /* Adjusted breakpoint for many links */
+  .nav-container {
+    grid-template-columns: auto auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    display: none;
+    padding: 0;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .dropdown-content {
+    position: static; /* Stack dropdowns vertically on mobile */
+    box-shadow: none;
+    background: #fdfdfd;
+    border-top: none;
+    display: none; /* Controlled by click/hover */
+  }
+
+  .nav-links li:hover .dropdown-content {
+    display: block;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .donate-btn {
+    display: none;
+  }
+}
+.hero-image{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(25%); /* makes image faint */
+  animation: zoom 20s infinite alternate;
+}
+/* FULL WIDTH ANNOUNCEMENT BAR */
+.announcement-bar {
+  padding: 15px;
+  width: 100%;
+  background: #e63946;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  position: sticky;
+  top: 65px; /* adjust based on navbar height */
+  z-index: 999;
+}
+
+/* SCROLLING TEXT */
+.scroll-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 15s linear infinite;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Pause on hover */
+.announcement-bar:hover .scroll-text {
+  animation-play-state: paused;
+}
+
+/* Animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.hero-box{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.hero-box{
+  margin-bottom: 50px;
+  margin-top: -90px;
+}
+.hero-box h3 {
+  margin-bottom: 10px;
+  font-size: 30px;
+  color: #fff;
+}
+
+.hero-box p {
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  color: #eee;
+  line-height: 1.6;
+}
+.hero-box {
+  animation: fadeUp 1s ease;
+}
+.hero-box-readmore{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.hero-box-readmore button{
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #e63946, #ff6b6b);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3x ease;
+  letter-spacing: 0.1px;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.partner-container{
+  width: 100%;
+  background: #f4f4f4;
+  padding: 20px 10px;
+  text-align: center;
+}
+.partner-container h3{
+  margin-bottom: 15px;
+  font-size: 20px;
+  color:#333;
+}
+/* Scroll wrapper */
+.scroll-partners {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* Track that moves */
+.scroll-track {
+  display: flex;
+  width: max-content;
+  gap: 40px;
+  /* Start from right */
+  transform: translateX(100%);
+  animation: scroll-left 5s linear infinite;
+}
+
+/* Logos */
+.scroll-track img {
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Pause scroll on hover */
+.scroll-partners:hover .scroll-track {
+  animation-play-state: paused;
+}
+
+/* Keyframes - start at right (100%) and move fully left (-100%) */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@media (max-width: 768px) {
+  .scroll-track img {
+    height: 40px;
+  }
+}
+.footer {
+  background: #000; /* pure black */
+  color: #fff;
+  padding: 20px 40px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;              /* key change */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;            /* prevents breaking on small screens */
+  gap: 20px;
+}
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e63946;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #bbb; /* slightly softer */
+  text-decoration: none;
+}
+.footer-section a {
+  transition: 0.3s;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  gap: 15px; /* makes links horizontal */
+  padding: 0;
+  align-items: center;
+flex-wrap: wrap; /* prevents overflow */
+}
+
+.footer-section ul li {
+  margin: 0; /* remove vertical spacing */
+}
+
+.footer-section a:hover {
+  color: #e63946;
+}
+
+/* SOCIAL */
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+@media (max-width: 768px){
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+@keyframes zoom{
+  from{transform: scale(1)}
+  to{transform: scale(1.1)}
+}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background: #f0f0f0;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="tuv (1).jpg" alt="TUV Logo">
+      <a href="index.html">
+        <img src="logo.jpg" alt="NGO Logo">
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="index.html" class="dropbtn">Home</a>
+        <ul class="dropdown-content">
+          <li><a href="About.html">Our Vision</a></li>
+          <li><a href="annual-reports.html">Annual Report</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="About.html" class="dropbtn">About Us</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Our Partners</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="projects.html" class="dropbtn">Projects</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Child Education</a></li>
+          <li><a href="#">Environment</a></li>
+          <li><a href="#">Health Camps</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="success-stories.html" class="dropbtn">Success Stories</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Impact 2024</a></li>
+          <li><a href="#">Case Studies</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="events.html" class="dropbtn">Events</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="latest-events.html">Latest Events</a></li>
+          <li><a href="#">Upcoming Events</a></li>
+          <li><a href="#">Past Events</a></li>
+        </ul> -->
+      </li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</nav>
+
+<script>
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+}
+</script>
+<script>
+const BASE = "http://localhost:5000";
+
+async function loadProjects() {
+  const grid = document.getElementById("projectsGrid");
+
+  try {
+    const res = await fetch(`${BASE}/api/projects`);
+
+    if (!res.ok) throw new Error("Server error");
+
+    const data = await res.json();
+
+    if (!data.success || !data.projects.length) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#888;">
+          No projects found.
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = data.projects.map(p => `
+      <div style="background:white;border-radius:12px;overflow:hidden;
+      box-shadow:0 5px 20px rgba(0,0,0,0.05);display:flex;flex-direction:column;">
+
+        ${p.image ? `<img src="${p.image}" alt="${p.title}" 
+        style="width:100%;height:200px;object-fit:cover;"
+        onerror="this.style.display='none'">` : ""}
+
+        <div style="padding:30px;flex-grow:1;">
+          
+          <div style="background:#ffe5e7;width:60px;height:60px;border-radius:50%;
+          display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <span style="font-size:24px;">📌</span>
+          </div>
+
+          <h3 style="color:#333;margin-bottom:15px;font-size:22px;">
+            ${p.title}
+          </h3>
+
+          <p style="color:#666;font-size:16px;margin-bottom:25px;line-height:1.7;">
+            ${p.description}
+          </p>
+
+          <div style="width:100%;background:#eee;height:8px;border-radius:4px;margin-bottom:10px;">
+            <div style="width:${p.funded||0}%;background:#e63946;height:100%;border-radius:4px;"></div>
+          </div>
+
+          <p style="font-size:14px;color:#888;text-align:right;">
+            ${p.funded||0}% Funded
+          </p>
+
+        </div>
+
+        <div style="padding:0 30px 30px;">
+          <button style="width:100%;padding:12px;background:white;
+          border:2px solid #e63946;color:#e63946;border-radius:8px;
+          font-weight:bold;cursor:pointer;transition:0.3s;"
+          onclick="window.location.href='donate.html'">
+            Support Project
+          </button>
+        </div>
+
+      </div>
+    `).join("");
+
+  } catch (err) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:red;">
+        Could not connect to server.
+      </div>`;
+  }
+}
+
+window.addEventListener("load", loadProjects);
+</script>
+<section class="hero" style="height: 40vh; margin-top: 0; min-height: 300px;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 style="font-size: 40px;">Our Projects</h1>
+        <p style="font-size: 18px;">Discover the initiatives we are working on to build a better future.</p>
+    </div>
+    <div class="hero-image">
+      <img src="ngo-activity-doctor-examine-child-health-clinic-center-which-organized-half-india-s-children-under-age-63979746.webp" alt="backimage" style="animation: none; filter: brightness(40%);">
+    </div>
+</section>
+
+<div style="max-width: 1200px; margin: 50px auto; padding: 0 20px; flex-grow: 1;">
+  <div id="projectsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px;">
+    
+    <!-- Loading state -->
+    <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#888;">
+      Loading projects...
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* CSS for Collage */
+.collage-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+.collage-section h2 {
+    text-align: center;
+    color: #e63946;
+    margin-bottom: 40px;
+    font-size: 36px;
+    font-weight: 700;
+}
+.collage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 250px);
+    gap: 15px;
+}
+.collage-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #000;
+}
+.collage-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.collage-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, opacity 0.3s;
+}
+.collage-item:hover img {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+.collage-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: translateY(10px);
+}
+.collage-item:hover .collage-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+.collage-overlay h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+.collage-overlay p {
+    font-size: 15px;
+    opacity: 0.9;
+}
+/* Grid spanning */
+.item-1 { grid-column: span 2; grid-row: span 2; }
+.item-2 { grid-column: span 1; grid-row: span 1; }
+.item-3 { grid-column: span 1; grid-row: span 1; }
+.item-4 { grid-column: span 2; grid-row: span 1; }
+
+@media (max-width: 768px) {
+    .collage-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+    .item-1 { grid-column: span 2; grid-row: span 1; aspect-ratio: 16/9;}
+    .item-2 { grid-column: span 1; grid-row: span 1; aspect-ratio: 1;}
+    .item-3 { grid-column: span 1; grid-row: span 1; aspect-ratio: 1;}
+    .item-4 { grid-column: span 2; grid-row: span 1; aspect-ratio: 16/9;}
+}
+</style>
+
+<div class="collage-section">
+    <h2>Project Highlights Gallery</h2>
+    <div class="collage-grid">
+        <div class="collage-item item-1">
+            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80" alt="Child Education">
+            <div class="collage-overlay">
+                <h3>Brighter Tomorrows</h3>
+                <p>Bringing modern education to remote villages.</p>
+            </div>
+        </div>
+        <div class="collage-item item-2">
+            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400&q=80" alt="Environment">
+            <div class="collage-overlay">
+                <h3>Green Earth</h3>
+                <p>Planting hope, one tree at a time.</p>
+            </div>
+        </div>
+        <div class="collage-item item-3">
+            <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=400&q=80" alt="Health">
+            <div class="collage-overlay">
+                <h3>Accessible Health</h3>
+                <p>Free medical camps for everyone.</p>
+            </div>
+        </div>
+        <div class="collage-item item-4">
+            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=80" alt="Community">
+            <div class="collage-overlay">
+                <h3>Community Strength</h3>
+                <p>Our dedicated volunteers making a lasting difference.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Contact Details</h3>
+      <p>Email: <a href="mailto:admin@vatsalyatrustmumbai.org ">admin@vatsalyatrustmumbai.org </a></p>
+      <p>Phone: +91 9876543210</p>
+      <p>Location: Near Kanjurmarg Police Station Kanjurmarg (E) Mumbai 400042 </p>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="https://www.facebook.com/vatsalyatrustmumbai1983/">Facebook</a>
+        <a href="https://www.instagram.com/vatsalyatrustmumbai/">Instagram</a>
+        <a href="https://www.linkedin.com/company/vatsalyatrust/">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 Vatsalya Trust Mumbai | All Rights Reserved</p>
+  </div>
+
+</footer>
+</body>
+</html>

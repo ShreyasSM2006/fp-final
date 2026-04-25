@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us</title>
+
+<style>
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* BODY */
+body {
+  zoom: 140%;
+  background-color: #f4f4f4;
+}
+
+/* NAVBAR */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px;
+  display: block;
+}
+
+/* UNDERLINE */
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* DROPDOWN */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  background: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 10px 0;
+}
+
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+/* BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+/* HERO */
+.about-hero {
+  position: relative;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+/* IMAGE */
+.about-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(25%);
+  animation: zoom 20s infinite alternate;
+  transform: scale(1.1);
+}
+
+/* OVERLAY */
+.about-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+/* CONTENT */
+.about-content {
+  position: relative;
+  z-index: 2;
+}
+
+.about-content h1 {
+  font-size: 42px;
+}
+
+.about-content p {
+  font-size: 18px;
+}
+
+/* ABOUT SECTION */
+.about-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+#full-text {
+  display: none;
+}
+
+.about-section button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #e63946;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* REGISTRATION */
+.registration {
+  text-align: center;
+  padding: 40px;
+}
+
+.reg-box {
+  background: white;
+  padding: 20px;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+/* BOARD */
+.board h2 {
+  text-align: center;
+}
+
+.board-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.member {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.member img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+/* ANIMATION */
+@keyframes zoom {
+  from { transform: scale(1.1); }
+  to { transform: scale(1.2); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="tuv (1).jpg">
+      <a href="index.html">
+          <img src="logo.jpg" alt="logo">
+      </a>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">Success Stories</a></li>
+      <li><a href="#">Events</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <a href="#" class="donate-btn">Donate</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="about-overlay"></div>
+
+  <div class="about-content">
+    <h1>About Vatsalya Trust</h1>
+    <p>Empowering lives through care, education, and community support since 1983.</p>
+  </div>
+
+  <div class="about-image">
+    <img src="ngo-activity-doctor-examine-child-health-clinic-center-which-organized-half-india-s-children-under-age-63979746.webp">
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <h2>Who are we?</h2>
+  <p>Vatsalya Trust is a public charitable trust dedicated to supporting orphaned and underprivileged children...</p>
+
+  <p id="full-text">
+    Vatsalya Trust, Mumbai is registered under the Bombay Public Trust Act, 1950. The organization focuses on care, protection, and empowerment of destitute children and marginalized youth.
+  </p>
+
+  <button onclick="toggleAbout()">Read More</button>
+</section>
+
+<!-- REGISTRATION -->
+<section class="registration">
+  <h2>Registration & Certification</h2>
+  <div class="reg-box">
+    <p><strong>Registered Under:</strong> Bombay Public Trust Act</p>
+    <p><strong>Established:</strong> 1983</p>
+  </div>
+</section>
+
+<!-- BOARD -->
+<section class="board">
+  <h2>Board Members</h2>
+
+  <div class="board-cards">
+    <div class="member">
+      <img src="member1.jpg">
+      <h3>Member Name</h3>
+      <p>Founder</p>
+    </div>
+
+    <div class="member">
+      <img src="member2.jpg">
+      <h3>Member Name</h3>
+      <p>Director</p>
+    </div>
+
+    <div class="member">
+      <img src="member3.jpg">
+      <h3>Member Name</h3>
+      <p>Coordinator</p>
+    </div>
+  </div>
+</section>
+
+<script>
+function toggleAbout() {
+  let full = document.getElementById("full-text");
+
+  if (full.style.display === "block") {
+    full.style.display = "none";
+  } else {
+    full.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

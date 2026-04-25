@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  zoom: 100%;
+  background: linear-gradient(135deg, #eef2f7, #f9fbfd);
+}
+
+/* ===== NAVBAR (EXACT SAME AS YOURS) ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 15px;
+  display: block;
+  transition: 0.3s;
+}
+
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* DROPDOWN */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 10px 0;
+  border-top: 2px solid #e63946;
+}
+
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.dropdown-content li a:hover {
+  background: #f8f9fa;
+  color: #e63946;
+  padding-left: 25px;
+}
+
+/* BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.donate-btn:hover {
+  background: #c92a35;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 4px;
+}
+
+/* MOBILE */
+@media (max-width: 1100px) {
+  .nav-container {
+    grid-template-columns: auto auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .donate-btn {
+    display: none;
+  }
+}
+
+/* ===== CONTACT SECTION (UPGRADED) ===== */
+
+.contact {
+  padding: 100px 10%;
+  position: relative;
+}
+
+/* subtle glow */
+.contact::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0,123,255,0.15), transparent);
+  top: 50px;
+  left: 10%;
+  filter: blur(80px);
+}
+
+.contact h2 {
+  text-align: center;
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.contact-sub {
+  text-align: center;
+  color: #666;
+  margin-bottom: 60px;
+}
+
+.contact-container {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contact-info,
+.contact-form {
+  flex: 1;
+  min-width: 300px;
+  padding: 35px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  transition: 0.4s;
+}
+
+.contact-info:hover,
+.contact-form:hover {
+  transform: translateY(-8px);
+}
+
+.contact-info h3 {
+  margin-bottom: 20px;
+}
+
+.contact-info p {
+  margin: 12px 0;
+  color: #444;
+}
+
+/* form */
+.input-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: #f1f3f6;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  background: white;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+}
+
+.input-group label {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  color: #777;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label,
+.input-group textarea:focus + label,
+.input-group textarea:valid + label {
+  top: -10px;
+  font-size: 12px;
+  background: white;
+  padding: 0 5px;
+  color: #007BFF;
+}
+
+.send-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(45deg, #007BFF, #00c6ff);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.send-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.4);
+}
+
+@media(max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+  }
+}
+.footer {
+  background: #000; /* pure black */
+  color: #fff;
+  padding: 20px 40px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;              /* key change */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;            /* prevents breaking on small screens */
+  gap: 20px;
+}
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e63946;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #bbb; /* slightly softer */
+  text-decoration: none;
+}
+.footer-section a {
+  transition: 0.3s;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  gap: 15px; /* makes links horizontal */
+  padding: 0;
+  align-items: center;
+flex-wrap: wrap; /* prevents overflow */
+}
+
+.footer-section ul li {
+  margin: 0; /* remove vertical spacing */
+}
+
+.footer-section a:hover {
+  color: #e63946;
+}
+.footer-bottom p{
+    text-align: center;
+    font-size: 17px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- EXACT NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="tuv (1).jpg" alt="TUV Logo">
+      <a href="index.html">
+        <img src="logo.jpg" alt="NGO Logo">
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="index.html" class="dropbtn">Home</a>
+        <ul class="dropdown-content">
+          <li><a href="About.html">Our Vision</a></li>
+          <li><a href="annual-reports.html">Annual Report</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="About.html" class="dropbtn">About Us</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Our Partners</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="projects.html" class="dropbtn">Projects</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Child Education</a></li>
+          <li><a href="#">Environment</a></li>
+          <li><a href="#">Health Camps</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="success-stories.html" class="dropbtn">Success Stories</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Impact 2024</a></li>
+          <li><a href="#">Case Studies</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="events.html" class="dropbtn">Events</a>
+        <ul class="dropdown-content">
+          <li><a href="#">Latest Events</a></li>
+          <li><a href="#">Upcoming Events</a></li>
+          <li><a href="#">Past Events</a></li>
+        </ul>
+      </li>
+
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- CONTACT -->
+<section class="contact">
+  <h2>Get in touch with us</h2>
+  <p class="contact-sub">We would love to hear from you</p>
+
+  <div class="contact-container">
+
+    <div class="contact-info">
+      <h3>Contact Information</h3>
+      <p>📍 Mumbai, India</p>
+      <p>📞 +91 98765 43210</p>
+      <p>📧 info@vatsalya.org</p>
+    </div>
+
+    <form class="contact-form">
+      <div class="input-group">
+        <input type="text" id = "name" required>
+        <label>Your Name</label>
+      </div>
+
+      <div class="input-group">
+        <input type="email" id = "email" required>
+        <label>Your Email</label>
+      </div>
+
+      <div class="input-group">
+        <textarea rows="5" id = "message" required></textarea>
+        <label>Your Message</label>
+      </div>
+      <div class="g-recaptcha" data-sitekey="6LcPY70sAAAAAAmq-2W9M7aAUEI6olOl5MzBgiE5"></div>
+      <button type="submit" class="send-btn" id="sendBtn">Send Message</button>
+    </form>
+
+  </div>
+</section>
+  <footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Contact Details</h3>
+      <p>Email: info@ngo.org</p>
+      <p>Phone: +91 9876543210</p>
+      <p>Location: Mumbai, India</p>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="https://www.facebook.com/vatsalyatrustmumbai1983/">Facebook</a>
+        <a href="https://www.instagram.com/vatsalyatrustmumbai/">Instagram</a>
+        <a href="https://www.linkedin.com/company/vatsalyatrust/">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 Vatsalya Trust Mumbai | All Rights Reserved</p>
+  </div>
+</footer>
+<!-- <script>
+const form = document.querySelector("form");
+const btn = document.getElementById("sendBtn");
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const message = document.querySelector("#message").value;
+
+    try {
+        btn.innerText = "Sending...";
+        btn.disabled = true;
+
+        const res = await fetch("http://localhost:3000/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, message })
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+            alert("Message sent successfully!");
+            form.reset();
+        } else {
+            alert(data.message || "Something went wrong");
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Server not reachable");
+    } finally {
+        // ✅ Reset button regardless of success or error
+        btn.innerText = "Send Message";
+        btn.disabled = false;
+    }
+});
+btn.innerText = "Send Message";
+btn.disabled = false;
+</script> -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+const form = document.querySelector(".contact-form");
+const btn = document.getElementById("sendBtn");
+
+form.addEventListener("submit", async function(e) {
+  e.preventDefault(); // stop reload
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const message = document.getElementById("message").value.trim();
+
+  if (!name || !email || !message) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  try {
+    const captchaToken = grecaptcha.getResponse();
+
+    if (!captchaToken) {
+      alert("Please complete the captcha");
+      btn.innerText = "Send Message";
+      btn.disabled = false;
+      return;
+    }
+    const res = await fetch("http://localhost:5000/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, message, captchaToken })
+    });
+
+    const data = await res.json();
+    console.log("Response:", data); // 🔥 DEBUG
+
+    if (data.success) {
+      alert("Message sent successfully!");
+      form.reset();
+    } else {
+      alert(data.message || "Error sending message");
+    }
+
+  } catch (err) {
+    console.error("ERROR:", err); // 🔥 DEBUG
+    alert("Server not reachable");
+  }
+
+  btn.innerText = "Send Message";
+  btn.disabled = false;
+});
+</script>
+</body>
+</html>

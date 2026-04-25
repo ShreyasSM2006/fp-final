@@ -1,0 +1,837 @@
+<!-- Home Page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGO Navbar - Scaled & Dropdowns</title>
+
+<style>
+/* UNIVERSAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  zoom: 100%;
+  background-color: #f4f4f4;
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+footer{
+  margin-top: auto;
+}
+/* NAVBAR BASE */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+/* LOGOS */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+  width: auto;
+}
+
+/* NAVIGATION LINKS & DROPDOWN LOGIC */
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-links li {
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 15px;
+  display: block;
+  transition: 0.3s;
+}
+
+/* HOVER UNDERLINE (Desktop Only) */
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* THE DROPDOWN MENU */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 10px 0;
+  border-top: 2px solid #e63946;
+}
+
+/* Show menu when hovering over the parent LI */
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li {
+  display: block;
+  width: 100%;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+}
+
+.dropdown-content li a:hover {
+  background: #f8f9fa;
+  color: #e63946;
+  padding-left: 25px;
+}
+
+/* Arrow indicator for dropdowns */
+.dropbtn::after {
+  content: ' ▾';
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* RIGHT: DONATE BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.donate-btn:hover {
+  background: #c92a35;
+}
+
+/* MOBILE MENU (HAMBURGER) */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 4px;
+}
+
+.hero {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hero-buttons .btn {
+  padding: 12px 25px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-donate {
+  background: #e63946;
+  color: white;
+}
+
+.btn-donate:hover {
+  background: #c92a35;
+}
+
+.btn-volunteer {
+  background: white;
+  color: #4b2e83;
+}
+
+.btn-volunteer:hover {
+  background: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 32px;
+  }
+  .hero-content p {
+    font-size: 16px;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+/* MOBILE RESPONSIVE */
+@media (max-width: 1100px) {
+  .nav-container {
+    grid-template-columns: auto auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    display: none;
+    padding: 0;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    background: #fdfdfd;
+    border-top: none;
+    display: none;
+  }
+
+  .nav-links li:hover .dropdown-content {
+    display: block;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .donate-btn {
+    display: none;
+  }
+}
+.hero-image{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(25%);
+  animation: zoom 20s infinite alternate;
+}
+
+/* ─── ANNOUNCEMENT BAR ─── */
+.announcement-bar {
+  padding: 12px 0;
+  width: 100%;
+  background: #e63946;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  position: sticky;
+  top: 65px;
+  z-index: 999;
+  /* Hidden by default; shown once announcements are loaded */
+  display: none;
+}
+
+/* SCROLLING TEXT */
+.scroll-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 20s linear infinite;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Pause on hover */
+.announcement-bar:hover .scroll-text {
+  animation-play-state: paused;
+}
+
+/* Animation */
+@keyframes scroll-left {
+  0%   { transform: translateX(0%);    }
+  100% { transform: translateX(-100%); }
+}
+
+.hero-box{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.hero-box{
+  margin-bottom: 50px;
+  margin-top: -90px;
+}
+.hero-box h3 {
+  margin-bottom: 10px;
+  font-size: 30px;
+  color: #fff;
+}
+
+.hero-box p {
+  font-size: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  color: #eee;
+  line-height: 1.6;
+}
+.hero-box {
+  animation: fadeUp 1s ease;
+}
+.hero-box-readmore{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.hero-box-readmore button{
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(90deg, #e63946, #ff6b6b);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.1px;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.partner-container{
+  width: 100%;
+  background: #f4f4f4;
+  padding: 20px 10px;
+  text-align: center;
+}
+.partner-container h3{
+  margin-bottom: 15px;
+  font-size: 20px;
+  color:#333;
+}
+/* Scroll wrapper */
+.scroll-partners {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* Track that moves */
+.scroll-track {
+  display: flex;
+  width: max-content;
+  gap: 40px;
+  transform: translateX(100%);
+  animation: scroll-left 5s linear infinite;
+}
+
+/* Logos */
+.scroll-track img {
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Pause scroll on hover */
+.scroll-partners:hover .scroll-track {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .scroll-track img {
+    height: 40px;
+  }
+}
+.footer {
+  background: #000;
+  color: #fff;
+  padding: 20px 40px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e63946;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #bbb;
+  text-decoration: none;
+}
+.footer-section a {
+  transition: 0.3s;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-section ul li {
+  margin: 0;
+}
+
+.footer-section a:hover {
+  color: #e63946;
+}
+
+/* SOCIAL */
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+@media (max-width: 768px){
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+@keyframes zoom{
+  from{transform: scale(1)}
+  to{transform: scale(1.1)}
+}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background: #f0f0f0;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="tuv (1).jpg" alt="TUV Logo">
+      <a href="index.html">
+        <img src="logo.jpg" alt="NGO Logo">
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="index.html" class="dropbtn">Home</a>
+        <ul class="dropdown-content">
+          <li><a href="About.html">Our Vision</a></li>
+          <li><a href="annual-reports.html">Annual Report</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="About.html" class="dropbtn">About Us</a>
+      </li>
+
+      <li class="dropdown">
+        <a href="projects.html" class="dropbtn">Projects</a>
+      </li>
+
+      <li class="dropdown">
+        <a href="success-stories.html" class="dropbtn">Success Stories</a>
+      </li>
+
+      <li class="dropdown">
+        <a href="events.html" class="dropbtn">Events</a>
+      </li>
+
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+  </div>
+</nav>
+
+<script>
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+}
+</script>
+
+<!-- ── DYNAMIC ANNOUNCEMENT BAR ── -->
+<!-- Hidden by default; shown & populated by loadAnnouncements() -->
+<div class="announcement-bar" id="announcementBar">
+  <span class="scroll-text" id="announcementText"></span>
+</div>
+
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-box">
+        <h3>About Vatsalya Trust</h3>
+        <p>Vatsalya Trust, Mumbai is registered as a Public Charitable Trust on 08.02.1983 under Bombay Public Trust Act 1950. Founders are Smt. Sanjivani Raykar, Late Shri. G.A Damle, Late Dr. Shivram Athavale, Shri. Nijasure along with a few other philanthropists, who intensely felt a need for starting a care and rehabilitation institute for the orphan, abandoned and destitute children.
+The main objective of the Trust is to 'care, protect and empower destitute and deprived members of the society with special emphasis on orphan/ destitute children and marginalized unskilled youth'.</p>
+          <div class="hero-box-readmore">
+            <a href="About.html">
+              <button id="read-more">Click to know more</button>
+            </a>
+          </div>
+      </div>
+        <h1>Empowering Children, Changing Futures</h1>
+        <p>Join us in providing education, healthcare, and hope to underprivileged children.</p>
+        <div class="hero-buttons">
+            <a href="donate.html" class="btn btn-donate">Donate</a>
+            <a href="volunteer.html" class="btn btn-volunteer">Volunteer</a>
+        </div>
+    </div>
+    <div class="hero-image">
+      <img src="ngo-activity-doctor-examine-child-health-clinic-center-which-organized-half-india-s-children-under-age-63979746.webp" alt="backimage">
+    </div>
+  </section>
+  <div class="partner-container">
+    <h3>Our partners</h3>
+    <div class="scroll-partners">
+      <div class="scroll-track">
+        <img src="jonson&jonson.jpg" alt="Jonson&Jonson">
+        <img src="L&TInfotech.jpg" alt="L&TInfotech">
+        <img src="Mkcl.jpg" alt="mkcl">
+        <img src="protean.jpg" alt="protean">
+        <img src="uti.jpeg" alt="UTI">
+        <img src="sbilife.jpg" alt="sbi">
+        <img src="sbicap.png" alt="sbicap">
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Latest Events Preview -->
+  <div id="homeEventsSection" style="max-width:1200px;margin:50px auto;padding:0 20px;display:none;">
+    <h2 style="text-align:center;color:#e63946;margin-bottom:30px;font-size:32px;">Latest Events</h2>
+    <div id="homeEventsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;"></div>
+    <div style="text-align:center;margin-top:25px;">
+      <a href="events.html" style="text-decoration:none;color:#e63946;font-weight:700;font-size:15px;">See All Events →</a>
+    </div>
+  </div>
+
+  <!-- Dynamic Projects Preview -->
+  <div id="homeProjectsSection" style="max-width:1200px;margin:50px auto;padding:0 20px;display:none;">
+    <h2 style="text-align:center;color:#e63946;margin-bottom:30px;font-size:32px;">Our Projects</h2>
+    <div id="homeProjectsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;"></div>
+    <div style="text-align:center;margin-top:25px;">
+      <a href="projects.html" style="text-decoration:none;color:#e63946;font-weight:700;font-size:15px;">View All Projects →</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Contact Details</h3>
+      <p>Email: <a href="mailto:admin@vatsalyatrustmumbai.org">admin@vatsalyatrustmumbai.org</a></p>
+      <p>Phone: +91 9876543210</p>
+      <p>Location: Near Kanjurmarg Police Station Kanjurmarg (E) Mumbai 400042</p>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="https://www.facebook.com/vatsalyatrustmumbai1983/">Facebook</a>
+        <a href="https://www.instagram.com/vatsalyatrustmumbai/">Instagram</a>
+        <a href="https://www.linkedin.com/company/vatsalyatrust/">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 Vatsalya Trust Mumbai | All Rights Reserved</p>
+  </div>
+</footer>
+
+<script>
+  const BASE = "http://localhost:5000";
+
+  // ─────────────────────────────────────────────
+  // ANNOUNCEMENTS — fetch active ones from backend
+  // and display in the scrolling bar
+  // ─────────────────────────────────────────────
+  async function loadAnnouncements() {
+    try {
+      // No auth header → server returns only active announcements
+      const res  = await fetch(`${BASE}/api/announcements`);
+
+      if (!res.ok) return; // silently fail on network issues
+
+      const data = await res.json();
+
+      if (!data.success || !data.announcements || !data.announcements.length) {
+        // No active announcements — keep the bar hidden
+        return;
+      }
+
+      // Build the scrolling text: join all announcement texts with a separator
+      const combined = data.announcements
+        .map(a => {
+          const text = a.text || "";
+          // If the announcement has a link, wrap it (plain text for scroll bar)
+          return a.link ? `${text} 👉 ${a.link}` : text;
+        })
+        .join("   ·   📢   ·   ");
+
+      document.getElementById("announcementText").textContent = "📢  " + combined + "   ";
+      document.getElementById("announcementBar").style.display = "block";
+
+    } catch (err) {
+      // Do not show console errors for network issues on public page
+      console.warn("Could not load announcements:", err.message);
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // LATEST EVENTS — show up to 3 on homepage
+  // ─────────────────────────────────────────────
+  async function loadHomeEvents() {
+    try {
+      const res  = await fetch(`${BASE}/api/events`);
+      const data = await res.json();
+      if (!data.success) return;
+
+      const items = (data.events || []).filter(ev => ev.type === "latest").slice(0, 3);
+      if (!items.length) return;
+
+      const section = document.getElementById("homeEventsSection");
+      const grid    = document.getElementById("homeEventsGrid");
+
+      grid.innerHTML = items.map(ev => `
+        <div style="background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);transition:0.3s;"
+             onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+          ${ev.image ? `<img src="${ev.image}" style="width:100%;height:160px;object-fit:cover;" onerror="this.style.display='none'" alt="">` : ''}
+          <div style="padding:20px;">
+            ${ev.date ? `<div style="font-size:12px;color:#e63946;font-weight:600;margin-bottom:8px;">📆 ${ev.date}</div>` : ''}
+            <h3 style="color:#333;font-size:16px;margin-bottom:8px;">${ev.title}</h3>
+            <p style="color:#666;font-size:13px;line-height:1.5;margin-bottom:12px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;">${ev.description}</p>
+            <a href="latest-events.html" style="color:#e63946;font-weight:600;font-size:13px;text-decoration:none;">Read more →</a>
+          </div>
+        </div>
+      `).join("");
+
+      section.style.display = "block";
+    } catch (e) {
+      console.warn("Could not load events:", e.message);
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // PROJECTS — show up to 3 on homepage
+  // ─────────────────────────────────────────────
+  async function loadHomeProjects() {
+    try {
+      const res  = await fetch(`${BASE}/api/projects`);
+      const data = await res.json();
+      if (!data.success) return;
+
+      const items = (data.projects || []).slice(0, 3);
+      if (!items.length) return;
+
+      const section = document.getElementById("homeProjectsSection");
+      const grid    = document.getElementById("homeProjectsGrid");
+
+      grid.innerHTML = items.map(p => `
+        <div style="background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);transition:0.3s;"
+             onmouseover="this.style.transform='translateY(-6px)'" onmouseout="this.style.transform='translateY(0)'">
+          ${p.image ? `<img src="${p.image}" style="width:100%;height:160px;object-fit:cover;" onerror="this.style.display='none'" alt="">` : ''}
+          <div style="padding:20px;">
+            <h3 style="color:#333;font-size:16px;margin-bottom:8px;">${p.title}</h3>
+            <p style="color:#666;font-size:13px;line-height:1.5;margin-bottom:12px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;">${p.description}</p>
+            <div style="width:100%;background:#eee;height:6px;border-radius:3px;margin-bottom:5px;">
+              <div style="width:${p.funded||0}%;background:#e63946;height:100%;border-radius:3px;"></div>
+            </div>
+            <p style="font-size:12px;color:#888;text-align:right;">${p.funded||0}% Funded</p>
+          </div>
+        </div>
+      `).join("");
+
+      section.style.display = "block";
+    } catch (e) {
+      console.warn("Could not load projects:", e.message);
+    }
+  }
+
+  // ─── Run on page load ─────────────────────────
+  window.addEventListener("load", function() {
+    loadAnnouncements();
+    loadHomeEvents();
+    loadHomeProjects();
+  });
+</script>
+</body>
+</html>

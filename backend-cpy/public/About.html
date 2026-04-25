@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - Vatsalya Trust</title>
+
+<style>
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  zoom: 100%;
+  background: #f4f6f9;
+}
+
+/* ================= NAVBAR (YOUR ORIGINAL) ================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 15px 15px;
+  display: block;
+  transition: 0.3s;
+}
+
+.nav-links li > a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #e63946;
+  left: 15px;
+  bottom: 10px;
+  transition: 0.3s;
+}
+
+.nav-links li:hover > a::after {
+  width: calc(100% - 30px);
+}
+
+/* DROPDOWN */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 0 0 6px 6px;
+  list-style: none;
+  padding: 10px 0;
+  border-top: 2px solid #e63946;
+}
+
+.nav-links li:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li a {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.dropdown-content li a:hover {
+  background: #f8f9fa;
+  color: #e63946;
+  padding-left: 25px;
+}
+
+/* BUTTON */
+.donate-btn {
+  background: #e63946;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.donate-btn:hover {
+  background: #c92a35;
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background: black;
+  margin: 4px;
+}
+
+/* MOBILE */
+@media (max-width: 1100px) {
+  .nav-container {
+    grid-template-columns: auto auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .donate-btn {
+    display: none;
+  }
+}
+
+/* ================= HERO ================= */
+.about-hero {
+  height: 90vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(40%);
+  animation: zoom 20s infinite alternate;
+}
+
+@keyframes zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.about-overlay {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-content {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  background: rgba(0,0,0,0.4);
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.about-content h1 {
+  font-size: 40px;
+}
+
+.about-content p {
+  margin-top: 10px;
+}
+
+/* ================= ABOUT ================= */
+.about-section {
+  padding: 80px 10%;
+}
+
+.about-block {
+  background: white;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.about-block:hover {
+  transform: translateY(-5px);
+}
+
+.about-block h2 {
+  color: #e63946;
+  margin-bottom: 10px;
+}
+
+.about-block p {
+  line-height: 1.6;
+}
+
+.about-block ul {
+  padding-left: 20px;
+}
+
+.highlight {
+  background: #fff3f3;
+  border-left: 5px solid #e63946;
+}
+
+/* VMV */
+.about-vmv {
+  display: flex;
+  gap: 20px;
+}
+
+.about-vmv div {
+  flex: 1;
+  padding: 25px;
+  border-radius: 12px;
+  color: white;
+}
+
+.about-vmv div:nth-child(1) { background: #e63946; }
+.about-vmv div:nth-child(2) { background: #1c7ed6; }
+.about-vmv div:nth-child(3) { background: #2f9e44; }
+
+@media (max-width: 900px) {
+  .about-vmv {
+    flex-direction: column;
+  }
+}
+.footer {
+  background: #000; /* pure black */
+  color: #fff;
+  padding: 20px 40px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;              /* key change */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;            /* prevents breaking on small screens */
+  gap: 20px;
+}
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.footer-section h3 {
+  margin-bottom: 15px;
+  color: #e63946;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 14px;
+  color: #bbb; /* slightly softer */
+  text-decoration: none;
+}
+.footer-section a {
+  transition: 0.3s;
+}
+
+.footer-section ul {
+  list-style: none;
+  display: flex;
+  gap: 15px; /* makes links horizontal */
+  padding: 0;
+  align-items: center;
+flex-wrap: wrap; /* prevents overflow */
+}
+
+.footer-section ul li {
+  margin: 0; /* remove vertical spacing */
+}
+
+.footer-section a:hover {
+  color: #e63946;
+}
+
+/* SOCIAL */
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* BOTTOM BAR */
+.footer-bottom {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+@media (max-width: 768px){
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+html{
+  scroll-behavior: smooth;
+}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+  background: #f0f0f0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+
+    <div class="logo-container">
+      <img src="tuv (1).jpg">
+      <a href="index.html">
+        <img src="logo.jpg" alt="logo">
+      </a>
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="index.html">Home</a>
+        <ul class="dropdown-content">
+          <li><a href="About.html">Our Vision</a></li>
+          <li><a href="annual-reports.html">Annual Report</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="About.html">About Us</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Our Partners</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="projects.html">Projects</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Child Education</a></li>
+          <li><a href="#">Environment</a></li>
+          <li><a href="#">Health Camps</a></li>
+        </ul> -->
+      </li>
+
+      <li class="dropdown">
+        <a href="stories.html">Success Stories</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="#">Impact 2024</a></li>
+          <li><a href="#">Case Studies</a></li>
+        </ul> -->
+      </li>
+      <li class="dropdown">
+        <a href="events.html">Events</a>
+        <!-- <ul class="dropdown-content">
+          <li><a href="latest-events.html">Latest Events</a></li>
+          <li><a href="#">Upcoming Events</a></li>
+        </ul> -->
+      </li>
+      <li><a href="contact.html">Contact Us</a></li>
+
+    </ul>
+
+    <a href="donate.html" class="donate-btn">Donate</a>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+  </div>
+</nav>
+<!-- HERO -->
+<section class="about-section">
+
+  <!-- WHO WE ARE -->
+  <div class="about-block">
+    <h2>Who We Are</h2>
+    <p>
+      Focused on its vision, Vatsalya Trust Mumbai creates lasting solutions to improve the quality of life 
+      for destitute and deprived individuals across all ages, race, caste, religion, and gender.
+    </p>
+    <p>
+      We provide comprehensive services including Adoption, Orphanage care, Old Age Home support, 
+      and care for destitute girls — truly living up to the name <b>“Vatsalya”</b>, meaning affection.
+    </p>
+  </div>
+
+  <!-- JOURNEY -->
+  <div class="about-block">
+    <h2>Our Journey</h2>
+    <p>
+      Vatsalya Trust Mumbai was founded on <b>8th February 1983</b> and registered under the 
+      Bombay Public Trust Act, 1950.
+    </p>
+    <p>
+      The founders — Smt. Sanjivani Raykar, Late Shri G.A. Damle, Late Dr. Shivram Athavale, 
+      Shri Nijasure, and other philanthropists — envisioned a dedicated organization for the care 
+      and rehabilitation of orphaned and abandoned children.
+    </p>
+  </div>
+
+  <!-- WHAT WE DO -->
+  <div class="about-block">
+    <h2>What We Do</h2>
+    <ul>
+      <li>Adoption services for orphaned, abandoned, and surrendered children</li>
+      <li>Care for infants received from hospitals, police, and public places</li>
+      <li>Orphanage and childcare support</li>
+      <li>Old age home services</li>
+      <li>Protection and care for destitute girls</li>
+    </ul>
+  </div>
+
+  <!-- IMPACT -->
+  <div class="about-block highlight">
+    <h2>Our Impact</h2>
+    <p>
+      Around <b>1275 children</b> have found loving homes through our adoption programs.
+    </p>
+    <p>
+      Many of these children continue to stay connected as volunteers and donors, 
+      creating a powerful cycle of care and support.
+    </p>
+    <p>
+      A milestone moment: The <b>1201st infant</b> was adopted on 8th January 2021 
+      by a family from Tamil Nadu.
+    </p>
+  </div>
+
+  <!-- RECOGNITION -->
+  <div class="about-block">
+    <h2>Recognition & Certifications</h2>
+    <ul>
+      <li>Recognized by Central Adoption Resource Authority (CARA)</li>
+      <li>FCRA Registered</li>
+      <li>Gold Certification by GuideStar India</li>
+      <li>ISO 9001:2015 Certified (TUV Austria)</li>
+      <li>Appreciated by India Development and Relief Fund (IDRF)</li>
+    </ul>
+  </div>
+
+  <!-- WORK AREAS -->
+  <div class="about-block">
+    <h2>Where We Work</h2>
+    <p>
+      Our projects are located across Maharashtra at Kanjurmarg, Sanpada, Alibag, and Badlapur.
+    </p>
+    <p>
+      We actively collaborate with local NGOs to reach remote tribal communities, including:
+    </p>
+    <ul>
+      <li>Mauli Shikshan Sanstha (Palghar)</li>
+      <li>Shabari Seva Samiti (Nandurbar)</li>
+      <li>Sneha Samaj (Talasari)</li>
+      <li>Parivartan Mahila Sanstha (Mokhada)</li>
+    </ul>
+  </div>
+
+  <!-- GROWTH -->
+  <div class="about-block">
+    <h2>Our Growth</h2>
+    <p>
+      From a small initiative in 1983, Vatsalya Trust Mumbai has grown into a strong organization, 
+      expanding its reach and impact across multiple regions and communities.
+    </p>
+    <p>
+      Today, it stands as a symbol of compassion, built on strong roots of 
+      <b>Love, Affection, and Care</b>.
+    </p>
+  </div>
+
+  <!-- VMV -->
+  <div class="about-vmv">
+    <div>
+      <h3>Vision</h3>
+      <p>
+        To create lasting solutions to improve quality of life for destitute and deprived individuals.
+      </p>
+    </div>
+
+    <div>
+      <h3>Mission</h3>
+      <p>
+        To ensure survival, protection, development, and dignity for those under our care.
+      </p>
+    </div>
+
+    <div>
+      <h3>Core Values</h3>
+      <p><b>Love, Affection, and Care</b></p>
+    </div>
+  </div>
+
+</section>
+
+<script>
+function toggleMenu() {
+  document.getElementById("navLinks").classList.toggle("active");
+}
+</script>
+  <footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="About.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-section">
+      <h3>Contact Details</h3>
+      <p>Email: <a href="mailto:admin@vatsalyatrustmumbai.org ">admin@vatsalyatrustmumbai.org </a></p>
+      <p>Phone: +91 9876543210</p>
+      <p>Location: Near Kanjurmarg Police Station Kanjurmarg (E) Mumbai 400042 </p>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-links">
+        <a href="https://www.facebook.com/vatsalyatrustmumbai1983/">Facebook</a>
+        <a href="https://www.instagram.com/vatsalyatrustmumbai/">Instagram</a>
+        <a href="https://www.linkedin.com/company/vatsalyatrust/">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="footer-bottom">
+    <p>© 2026 Vatsalya Trust Mumbai | All Rights Reserved</p>
+  </div>
+</footer>
+</body>
+</html>

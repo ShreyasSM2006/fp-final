@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login</title>
+<style>
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2c7be5, #00c6ff);
+  font-family: Arial;
+}
+.login-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+button {
+  background: #2c7be5;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.error { color: red; }
+</style>
+</head>
+<body>
+<div class="login-container">
+  <h2>Admin Login</h2>
+  <form id="loginForm">
+    <input type="email" id="email" required placeholder="Email">
+    <input type="password" id="password" required placeholder="Password">
+    <button type="submit">Login</button>
+  </form>
+  <div class="error" id="errorMsg"></div>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("http://localhost:5000/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "Admin-Dashboard.html";
+  } else {
+    alert(data.message);
+  }
+});
+</script>
+</body>
+</html>
