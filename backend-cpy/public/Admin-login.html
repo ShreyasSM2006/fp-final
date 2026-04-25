@@ -60,7 +60,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
 
   if (data.success) {
     localStorage.setItem("token", data.token);
-    window.location.href = "Admin-Dashboard.html";
+    window.location.href = "/Admin-Dashboard.html";
   } else {
     alert(data.message);
   }
