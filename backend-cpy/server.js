@@ -1018,7 +1018,8 @@ const publicPath = path.join(__dirname, "public");
 
 app.use(express.static(publicPath));
 
-app.get("/*", (req, res) => {
+// Catch-all route (WORKS in latest Express)
+app.use((req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
