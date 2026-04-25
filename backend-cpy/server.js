@@ -1018,14 +1018,16 @@ const publicPath = path.join(__dirname, "public");
 
 app.use(express.static(publicPath));
 
-// IMPORTANT: must be LAST route
 app.use((req, res) => {
+  if (req.originalUrl.startsWith("/api")) {
+    return res.status(404).json({
+      success: false,
+      message: "API route not found"
+    });
+  }
+
   res.sendFile(path.join(publicPath, "index.html"));
 });
-
-// ──────────────────────────────────────────────
-// Start Server
-// ──────────────────────────────────────────────
 
 const PORT = process.env.PORT || 5000;
 
