@@ -1010,7 +1010,14 @@ app.delete("/api/stories/:id", authenticateToken, async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to delete story" });
   }
 });
+// ──────────────────────────────────────────────
+// Serve Frontend (IMPORTANT)
+// ──────────────────────────────────────────────
+app.use(express.static(path.join(__dirname, "public")));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 // ──────────────────────────────────────────────
 // Start Server
 // ──────────────────────────────────────────────
