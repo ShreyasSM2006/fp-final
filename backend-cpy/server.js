@@ -1011,17 +1011,21 @@ app.delete("/api/stories/:id", authenticateToken, async (req, res) => {
   }
 });
 // ──────────────────────────────────────────────
-// Serve Frontend (CORRECT FOR YOUR STRUCTURE)
+// Serve Frontend (FINAL FIX)
 // ──────────────────────────────────────────────
 
 const publicPath = path.join(__dirname, "public");
 
 app.use(express.static(publicPath));
 
-// Catch-all route (WORKS in latest Express)
+// IMPORTANT: must be LAST route
 app.use((req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
+
+// ──────────────────────────────────────────────
+// Start Server
+// ──────────────────────────────────────────────
 
 const PORT = process.env.PORT || 5000;
 
